@@ -1,6 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
-metadata:
+metadata:123
   namespace : kubernetes-dashboard
   labels:
     k8s-app: kubernetes-dashboard
