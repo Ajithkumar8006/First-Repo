@@ -1,8 +1,7 @@
 name: Cron Job Every Minute
 
 on:
-  schedule:
-    - cron: '*/1 * * * *'  # Runs every minute
+workflow_dispatch
 
 jobs:
   echo_hello_world:
