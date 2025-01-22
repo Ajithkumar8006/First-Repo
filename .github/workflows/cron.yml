@@ -1,0 +1,24 @@
+name: Run Python Script Every Minute
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # This runs the workflow every minute
+  push:
+    branches:
+      - main  # This will also trigger on push to the main branch
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest  # The job will run on the latest Ubuntu runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # This checks out the repository code (even though we don't need a file)
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Specify the version of Python you want to use
+
+      - name: Run "Hello, World!" Python script
+        run: python -c "print('Hello, World!')"  # Run Python code directly in the workflow
