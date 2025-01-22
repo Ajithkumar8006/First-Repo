@@ -2,8 +2,8 @@ name: Cron Job Every Minute
 
 on:
   schedule:
-    - cron: '*/1 * * *'
-    - cron: '*/1 * * *'
+    - cron: '*/1 * * * *' 
+    - cron: '*/1 * * * *' 
 
 jobs:
   test_schedule:
