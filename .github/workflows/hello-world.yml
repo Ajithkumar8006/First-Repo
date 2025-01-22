@@ -1,8 +1,16 @@
-name: hello-world
-on: push
+name: Cron Job Every Minute
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # Runs every minute
+
 jobs:
-  my-job:
+  echo_hello_world:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Echo Hello World
+      run: echo "Hello World"
