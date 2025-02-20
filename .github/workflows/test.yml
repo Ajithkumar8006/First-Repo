@@ -13,12 +13,11 @@ jobs:
     - name: Set up Python 3
       uses: actions/setup-python@v2
       with:
-        python-version: '3.13'
+        python-version: '3.9'
 
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade requests
-        pip install json
 
     - name: Run script
       run: python test-01-repo/test.py
