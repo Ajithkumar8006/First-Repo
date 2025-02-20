@@ -13,12 +13,12 @@ jobs:
     - name: Set up Python 3
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.7'
 
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade requests
-        pip install argparse configparser requests json
+        pip install argparse configparser urllib3 json
 
     - name: Run script
       run: python test-01-repo/test.py
