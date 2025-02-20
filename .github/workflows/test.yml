@@ -18,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install argparse configparser requests urllib3 json subprocess pathlib shutil csv
 
     - name: Run script
       run: python test-01-repo/test.py
