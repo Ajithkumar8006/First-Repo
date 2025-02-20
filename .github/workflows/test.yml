@@ -18,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade requests
-        pip install argparse configparser csv json
+        pip install csv json
 
     - name: Run script
       run: python test-01-repo/test.py
