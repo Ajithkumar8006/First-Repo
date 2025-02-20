@@ -1,24 +1,37 @@
-name: Run Python Script
+name: Authenticate AppDynamics and Run Script
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  run-script:
+  appdynamics-auth-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python 3
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+      # Set up Python (needed to run your Python script)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install argparse configparser requests urllib3
+      # Create credentials.ini file with the replaced values
+      - name: Create credentials.ini with replaced values
+        run: |
+          # Replace placeholders in the credentials.ini file using sed
+          echo "[credentials]" > credentials.ini
+          sed "s|HOSTURL|${{ secrets.HOSTURL }}|" > credentials.ini
+          sed -i "s|USERNAME|${{ secrets.USERNAME }}|" credentials.ini
+          sed -i "s|CLIENT_SECRET|${{ secrets.CLIENT_SECRET }}|" credentials.ini
+          sed -i "s|ACCOUNT_ID|${{ secrets.ACCOUNT_ID}}|" credentials.ini
+          sed -i "s|AUTHURI|${{ secrets.AUTHURI }}|" credentials.ini
 
-    - name: Run script
-      run: python test-01-repo/test.py
+      # Run the Python script with the credentials.ini file
+      - name: Run the AppDynamics test script
+        run: |
+          python ./test-01-repo/test.py --creds credentials.ini
