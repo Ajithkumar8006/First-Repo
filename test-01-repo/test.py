@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+# python .\appD_02.py --creds credentials.ini --uri /api/endpoint --output output.json
 
+import argparse
 import configparser
 import requests
 import urllib3
@@ -41,6 +43,37 @@ class Authentication:
         print("Successfully authenticated")
         return self.authinfo['token']
 
+    def download_json(self, url, headers=None):
+        if headers is None:
+            headers = {
+                "Authorization": f"Bearer {self.authinfo['token']}",
+                "Content-Type": "application/json"
+            }
+        else:
+            headers["Authorization"] = f"Bearer {self.authinfo['token']}"
+
+        try:
+            response = requests.get(url, headers=headers, verify=False)
+        except requests.exceptions.RequestException as e:
+            print(f"Error sending GET request: {e}")
+            exit(1)
+
+        if not response.ok:
+            print(f"GET request failed: {response.status_code} {response.reason}")
+            print(f"Response content: {response.content}")
+            exit(1)
+
+        jsondata = response.json()
+        print("Successfully downloaded JSON data")
+        return jsondata
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Authenticate with AppDynamics API using credentials from a file.')
+    parser.add_argument('--creds', required=True, help='Path to the credentials .ini file')
+    parser.add_argument('--uri', required=True, help='Endpoint URI for the API request')
+    parser.add_argument('--output', required=True, help='Output file for the JSON data')
+    return parser.parse_args()
+
 def load_credentials(filepath):
     config = configparser.ConfigParser()
     config.read(filepath)
@@ -55,7 +88,13 @@ def load_credentials(filepath):
     return creds
 
 if __name__ == "__main__":
-    creds = load_credentials('credentials.ini')  # Adjust the path to the credentials file as needed
+    args = parse_arguments()
+    creds = load_credentials(args.creds)
     auth = Authentication(creds)
     token = auth.initoauth()
-    print(f"Generated Token: {token}")
+    json_data = auth.download_json(creds['hosturl'] + args.uri)
+    print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
+
+    with open(args.output, "w") as json_file:
+        json.dump(json_data, json_file, indent=4)
+    print(f"JSON data saved to {args.output}")
