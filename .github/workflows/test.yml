@@ -17,7 +17,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
+        python3 -m pip install --upgrade requests
         pip install argparse configparser requests urllib3 json
 
     - name: Run script
