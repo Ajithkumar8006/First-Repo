@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-# python .\appD_02.py --creds credentials.ini --uri /api/endpoint --output output.json
 
 import argparse
 import configparser
 import requests
 import urllib3
-import json
 
 # Suppress only the single warning from urllib3.
 urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
@@ -27,14 +25,19 @@ class Authentication:
             "client_secret": self.credinfo['clientsecret']
         }
 
+        print(f"initoauth: Sending OAuth request: url: {url} headers: {headers} data: {payload}")
+
+        # Sending the request to get the token
         try:
-            result = requests.post(url, headers=headers, data=payload, verify=False)
+            result = requests.post(url, headers=headers, data=payload, verify=False)  # Disable SSL/TLS certificates verification
         except requests.exceptions.RequestException as e:
             print(f"Error sending OAuth request: {e}")
             exit(1)
 
+        print(f"initoauth: OAuth result: {result}")
+
         if not result.ok:
-            print(f"OAuth request failed: {result.status_code} {result.reason}")
+            print(f"OAuth request failed: {result} {result.reason}")
             exit(1)
 
         jsondata = result.json()
@@ -43,41 +46,18 @@ class Authentication:
         print("Successfully authenticated")
         return self.authinfo['token']
 
-    def download_json(self, url, headers=None):
-        if headers is None:
-            headers = {
-                "Authorization": f"Bearer {self.authinfo['token']}",
-                "Content-Type": "application/json"
-            }
-        else:
-            headers["Authorization"] = f"Bearer {self.authinfo['token']}"
-
-        try:
-            response = requests.get(url, headers=headers, verify=False)
-        except requests.exceptions.RequestException as e:
-            print(f"Error sending GET request: {e}")
-            exit(1)
-
-        if not response.ok:
-            print(f"GET request failed: {response.status_code} {response.reason}")
-            print(f"Response content: {response.content}")
-            exit(1)
-
-        jsondata = response.json()
-        print("Successfully downloaded JSON data")
-        return jsondata
-
+# Command-line argument parsing
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Authenticate with AppDynamics API using credentials from a file.')
     parser.add_argument('--creds', required=True, help='Path to the credentials .ini file')
-    parser.add_argument('--uri', required=True, help='Endpoint URI for the API request')
-    parser.add_argument('--output', required=True, help='Output file for the JSON data')
     return parser.parse_args()
 
+# Load credentials from the .ini file
 def load_credentials(filepath):
     config = configparser.ConfigParser()
     config.read(filepath)
 
+    # Assuming the .ini file has these sections/keys
     creds = {
         "hosturl": config.get('credentials', 'hosturl'),
         "authuri": config.get('credentials', 'authuri'),
@@ -88,13 +68,13 @@ def load_credentials(filepath):
     return creds
 
 if __name__ == "__main__":
+    # Parse command-line arguments
     args = parse_arguments()
+
+    # Load credentials from the provided .ini file
     creds = load_credentials(args.creds)
+
+    # Authenticate using the loaded credentials
     auth = Authentication(creds)
     token = auth.initoauth()
-    json_data = auth.download_json(creds['hosturl'] + args.uri)
-    print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
-
-    with open(args.output, "w") as json_file:
-        json.dump(json_data, json_file, indent=4)
-    print(f"JSON data saved to {args.output}")
+    print("Token obtained: ", token)
