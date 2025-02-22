@@ -1,15 +1,11 @@
 name: AppDynamics
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/credentials.yml
-      - .github/actions/*
-      - credentials.ini
+  workflow_dispatch:
 
-permissions: write-all
+permissions:
+  contents: write
+  actions: write
 
 jobs:
   automated_report:
