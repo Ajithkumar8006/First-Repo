@@ -1,0 +1,57 @@
+name: 'Python AppDynamics Automation'
+description: 'A composite action to automate AppDynamics tests using Python.'
+inputs:
+  HOSTURL:
+    description: 'The host URL for AppDynamics.'
+    required: true
+  USERNAME:
+    description: 'The username for AppDynamics.'
+    required: true
+  CLIENT_SECRET:
+    description: 'The client secret for AppDynamics.'
+    required: true
+  ACCOUNT_ID:
+    description: 'The account ID for AppDynamics.'
+    required: true
+  AUTH_URI:
+    description: 'The authentication URI for AppDynamics.'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python 3
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install argparse configparser requests urllib3
+
+    - name: Create credentials.ini with replaced values
+      run: |
+        cat <<EOF > credentials.ini
+        [credentials]
+        hosturl=${{ inputs.HOSTURL }}
+        username=${{ inputs.USERNAME }}
+        clientsecret=${{ inputs.CLIENT_SECRET }}
+        accountid=${{ inputs.ACCOUNT_ID }}
+        authuri=${{ inputs.AUTH_URI }}
+        EOF
+        # Print the credentials.ini to verify
+        cat credentials.ini
+
+    - name: Run the AppDynamics test scripts
+      run: |
+        python .github/actions/test.py --creds credentials.ini
+        python .github/actions/test.py --creds credentials.ini
+
+    - name: Upload generated bt.json as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: bt-report
+        path: bt.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
