@@ -38,28 +38,24 @@ runs:
         python3 -m pip install argparse configparser requests urllib3
       shell: bash
 
-    - name: Create credentials.ini with replaced values
+    - name: Create credentials.ini
       run: |
-        cat <<EOF > credentials.ini
-        [credentials]
+        echo "[credentials]
         hosturl=${{ inputs.HOSTURL }}
         username=${{ inputs.USERNAME }}
         clientsecret=${{ inputs.CLIENT_SECRET }}
         accountid=${{ inputs.ACCOUNT_ID }}
-        authuri=${{ inputs.AUTH_URI }}
-        EOF
-        # Print the credentials.ini to verify
+        authuri=${{ inputs.AUTH_URI }}" > credentials.ini
         cat credentials.ini
       shell: bash
 
-    - name: Run the AppDynamics test scripts
+    - name: Run AppDynamics tests
       run: |
-        # Run the script using the variable path
-        python ${{ env.ACTION_PATH }}service_endpoint/test1.py --creds credentials.ini
-        python ${{ env.ACTION_PATH }}service_endpoint/bt_csv.py
+        python ${{ github.workspace }}/${{ env.ACTION_PATH }}service_endpoint/test1.py --creds credentials.ini
+        python ${{ github.workspace }}/${{ env.ACTION_PATH }}service_endpoint/bt_csv.py
       shell: bash
 
-    - name: Upload generated bt.json as artifact
+    - name: Upload generated bt.csv as artifact
       uses: actions/upload-artifact@v4
       with:
         name: bt-report
