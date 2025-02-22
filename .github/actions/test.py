@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     # Download JSON data from the specified URL (hosturl is now obtained from credentials)
     json_data = auth.download_json(creds['hosturl'] + businesstransactions['uri'])
-    print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
+    #print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
 
     # Save the downloaded JSON data to a file
     with open("bt.json", "w") as json_file:
