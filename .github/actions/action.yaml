@@ -47,6 +47,7 @@ runs:
         accountid=${{ inputs.ACCOUNT_ID }}
         authuri=${{ inputs.AUTH_URI }}" > credentials.ini
         cat credentials.ini
+        echo $pwd
       shell: bash
 
     - name: Run AppDynamics tests
