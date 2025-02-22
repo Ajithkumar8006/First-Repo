@@ -1,5 +1,4 @@
-#test
-name: Run Python AppDynamics
+name: AppDynamics
 
 on:
   push:
