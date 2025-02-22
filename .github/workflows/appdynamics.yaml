@@ -1,0 +1,29 @@
+name: Run Python AppDynamics
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/credentials.yml
+      - .github/actions/*
+      - credentials.ini
+
+permissions: write-all
+
+jobs:
+  automated_report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run the AppDynamics automation action
+        uses: ./.github/actions  # This points to the composite action defined above
+        with:
+          HOSTURL: ${{ vars.HOSTURL }}
+          USERNAME: ${{ secrets.USERNAME }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+          AUTH_URI: ${{ secrets.AUTH_URI }}
