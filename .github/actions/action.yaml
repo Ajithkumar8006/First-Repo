@@ -16,6 +16,9 @@ inputs:
   AUTH_URI:
     description: 'The authentication URI for AppDynamics.'
     required: true
+  TEST_TOKEN:
+    description: 'The test token for GitHub API.'
+    required: true
 
 runs:
   using: 'composite'
@@ -29,6 +32,7 @@ runs:
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install argparse configparser requests urllib3
+      shell: bash
 
     - name: Create credentials.ini with replaced values
       run: |
@@ -42,11 +46,13 @@ runs:
         EOF
         # Print the credentials.ini to verify
         cat credentials.ini
+      shell: bash
 
     - name: Run the AppDynamics test scripts
       run: |
         python .github/actions/test.py --creds credentials.ini
         python .github/actions/test.py --creds credentials.ini
+      shell: bash
 
     - name: Upload generated bt.json as artifact
       uses: actions/upload-artifact@v4
@@ -54,4 +60,4 @@ runs:
         name: bt-report
         path: bt.json
       env:
-        GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.TEST_TOKEN }}
