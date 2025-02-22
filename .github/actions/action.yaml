@@ -1,5 +1,6 @@
 name: 'Python AppDynamics Automation'
 description: 'A composite action to automate AppDynamics tests using Python.'
+
 inputs:
   HOSTURL:
     description: 'The host URL for AppDynamics.'
@@ -19,6 +20,9 @@ inputs:
   TEST_TOKEN:
     description: 'The test token for GitHub API.'
     required: true
+
+env:
+  ACTION_PATH: '.github/actions/'
 
 runs:
   using: 'composite'
@@ -50,9 +54,9 @@ runs:
 
     - name: Run the AppDynamics test scripts
       run: |
-        # python .github/actions/test.py --creds credentials.ini
-        python .github/actions/service_endpoint/test1.py --creds credentials.ini
-        python .github/actions/service_endpoint/bt_csv.py
+        # Run the script using the variable path
+        python ${{ env.ACTION_PATH }}service_endpoint/test1.py --creds credentials.ini
+        python ${{ env.ACTION_PATH }}service_endpoint/bt_csv.py
       shell: bash
 
     - name: Upload generated bt.json as artifact
