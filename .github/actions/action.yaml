@@ -50,8 +50,8 @@ runs:
 
     - name: Run the AppDynamics test scripts
       run: |
-        python .github/actions/test.py --creds credentials.ini
-        python .github/actions/test.py --creds credentials.ini
+        # python .github/actions/test.py --creds credentials.ini
+        python .github/actions/service_endpoint/test1.py --creds credentials.ini
       shell: bash
 
     - name: Upload generated bt.json as artifact
