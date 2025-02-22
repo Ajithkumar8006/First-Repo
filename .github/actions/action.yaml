@@ -51,6 +51,7 @@ runs:
 
     - name: Run AppDynamics tests
       run: |
+        # Corrected path to test1.py and bt_csv.py
         python ${{ github.workspace }}/${{ env.ACTION_PATH }}service_endpoint/test1.py --creds credentials.ini
         python ${{ github.workspace }}/${{ env.ACTION_PATH }}service_endpoint/bt_csv.py
       shell: bash
