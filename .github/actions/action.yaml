@@ -45,15 +45,11 @@ runs:
         authuri=${{ inputs.AUTH_URI }}" > .github/credentials.ini
       shell: bash
 
-    - name: Run AppDynamics tests
+    - name: Run Service Endpoint Report
       run: |
         chmod +x ${{ env.ACTION_PATH }}/service_endpoint/service_endpoint.sh
-        # Uncomment and modify the following lines based on your actual test files
-        # python3 ${{ env.ACTION_PATH }}/service_endpoint/test1.py --creds ${{ env.ACTION_PATH }}/credentials.ini
-        # python3 ${{ env.ACTION_PATH }}/service_endpoint/bt_csv.py
         ${{ env.ACTION_PATH }}/service_endpoint/service_endpoint.sh
-        # ls to check files
-        ls
+        ls ${{ env.ACTION_PATH }}
       env:
         ACTION_PATH: '.github/actions'
       shell: bash
