@@ -1,12 +1,5 @@
 import json
 import csv
-import os
-
-# Access environment variable
-app_online = os.getenv('ONLINE_SERVICE')
-app_mobile = os.getenv('MOBILE_SERVICE')
-print(f"online app id: {app_online}")
-print(f"mobile app id: {app_mobile }")
 
 # Function to read JSON data and write it into a CSV file
 def json_to_csv(json_file, csv_file):
