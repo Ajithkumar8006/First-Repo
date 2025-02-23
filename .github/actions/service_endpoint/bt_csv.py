@@ -23,8 +23,8 @@ def json_to_csv(json_file, csv_file):
     print(f"Data has been written to {csv_file}")
 
 # Example usage
-json_file = 'bt.json'  # Path to your JSON file
-csv_file = 'bt.csv'    # Desired output CSV file
+json_file = '.github/actions/service_endpoint/bt.json'  # Path to your JSON file
+csv_file = '.github/actions/service_endpoint/bt.csv'    # Desired output CSV file
 
 # Call the function to convert JSON to CSV
 json_to_csv(json_file, csv_file)
