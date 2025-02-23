@@ -51,6 +51,7 @@ runs:
     - name: Run AppDynamics tests
       run: |
         cd .github/actions/service_endpoint
+        python test1.py --creds credentials.ini
         #python .github/actions/service_endpoint/test1.py --creds credentials.ini
         #python .github/actions/service_endpoint/bt_csv.py
         #cd .github/actions/service_endpoint && chmod +x ./service_endpoint.sh
