@@ -47,11 +47,11 @@ runs:
 
     - name: Run Service Endpoint Report
       run: |
-        chmod +x ${{ env.ACTION_PATH }}/service_endpoint/service_endpoint.sh
-        ${{ env.ACTION_PATH }}/service_endpoint/service_endpoint.sh
+        chmod +x ${{ env.ACTION_PATH }}/service_endpoint.sh
+        ${{ env.ACTION_PATH }}/service_endpoint.sh
         ls ${{ env.ACTION_PATH }}
       env:
-        ACTION_PATH: '.github/actions'
+        ACTION_PATH: '.github/actions/service_endpoint'
       shell: bash
 
     - name: Upload generated bt.csv as artifact
