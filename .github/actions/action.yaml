@@ -55,9 +55,9 @@ runs:
         echo $pwd
         #python .github/actions/service_endpoint/test1.py --creds credentials.ini
         #python .github/actions/service_endpoint/bt_csv.py
-        chmod +x .github/actions/service_endpoint/service_endpoint.sh
-        .github/actions/service_endpoint/service_endpoint.sh
-        ls .github/actions/service_endpoint/
+        cd .github/actions/service_endpoint && chmod +x ./service_endpoint.sh
+        ./service_endpoint.sh
+        ls
       shell: bash
 
     - name: Upload generated bt.csv as artifact
