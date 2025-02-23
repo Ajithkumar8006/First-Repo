@@ -50,8 +50,8 @@ runs:
 
     - name: Run AppDynamics tests
       run: |
-        chmod +x ./github/actions/service_endpoint/service_endpoint.sh
-        cat ./github/actions/service_endpoint/service_endpoint.sh
+        chmod +x .github/actions/service_endpoint/service_endpoint.sh
+        cat .github/actions/service_endpoint/service_endpoint.sh
         #python3 test1.py --creds .github/actions/credentials.ini
         #python .github/actions/service_endpoint/test1.py --creds credentials.ini
         #python .github/actions/service_endpoint/bt_csv.py
