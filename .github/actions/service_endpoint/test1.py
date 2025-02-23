@@ -129,6 +129,7 @@ if __name__ == "__main__":
     print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
 
     # Save the downloaded JSON data to a file
-    with open(".github/actions/service_endpoint/{app_online}_bt.json", "w") as json_file:
+    with open(".github/actions/service_endpoint/bt.json", "w") as json_file:
         json.dump(json_data, json_file, indent=4)
     print("JSON data saved to bt.json")
+    print("JSON data saved to {app_online}_bt.json")
