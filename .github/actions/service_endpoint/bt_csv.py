@@ -1,5 +1,6 @@
 import json
 import csv
+import argparse
 
 # Function to read JSON data and write it into a CSV file
 def json_to_csv(json_file, csv_file):
@@ -21,10 +22,16 @@ def json_to_csv(json_file, csv_file):
         writer.writerows(data)
 
     print(f"Data has been written to {csv_file}")
+# Set up argument parsing
+parser = argparse.ArgumentParser(description="Convert JSON to CSV.")
+parser.add_argument('--appid', type=str, required=True, help="App ID to be used in the file names")
 
-# Example usage
-json_file = '.github/actions/service_endpoint/bt.json'  # Path to your JSON file
-csv_file = '.github/actions/service_endpoint/bt.csv'    # Desired output CSV file
+# Parse command-line arguments
+args = parser.parse_args()
+
+# Define JSON and CSV file paths using the input appid
+json_file = f'.github/actions/service_endpoint/{args.appid}_bt.json'  # Path to your JSON file
+csv_file = f'.github/actions/service_endpoint/{args.appid}_bt.csv'    # Desired output CSV file
 
 # Call the function to convert JSON to CSV
 json_to_csv(json_file, csv_file)
