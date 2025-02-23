@@ -2,14 +2,16 @@
 
 # Define the base path for your GitHub repository (if necessary)
 ACTION_PATH=".github/actions"
+CREDENTIALS_TEST="credentials.ini"
+SERVICE_ENDPOINT="service_endpoint"
 
 # Define the path to the Python script and credentials file
-SCRIPT_PATH="$ACTION_PATH/service_endpoint/test2.py"
+SE="$ACTION_PATH/$SERVICE_ENDPOINT/test2.py"
 
 # Check if the Python script and credentials file exist
-if [ -f "$SCRIPT_PATH" ]; then
+if [ -f "$SE" ]; then
     # Run the Python script with the specified arguments
-    python3 "$SCRIPT_PATH" --creds credentials.ini
+    python3 "$SE" --creds "$CREDENTIALS_TEST"
 else
-    echo "Error: Either $SCRIPT_PATH or $CREDENTIALS_FILE not found!"
+    echo "Error: Either $SE or $CREDENTIALS_TEST not found!"
 fi
