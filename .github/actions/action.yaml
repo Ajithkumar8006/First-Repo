@@ -58,6 +58,6 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: bt-report
-        path: .github/actions/service_endpoint/bt.csv
+        path: .github/actions/service_endpoint/591_bt.csv
       env:
         GITHUB_TOKEN: ${{ inputs.TEST_TOKEN }}
