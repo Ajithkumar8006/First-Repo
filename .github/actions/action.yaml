@@ -56,12 +56,13 @@ runs:
         #python .github/actions/service_endpoint/bt_csv.py
         chmod +x ./test.sh
         ./test.sh
+        ls ./temp
       shell: bash
 
     - name: Upload generated bt.csv as artifact
       uses: actions/upload-artifact@v4
       with:
         name: bt-report
-        path: bt.csv
+        path: ./temp/bt.csv
       env:
         GITHUB_TOKEN: ${{ inputs.TEST_TOKEN }}
