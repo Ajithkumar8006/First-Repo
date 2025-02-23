@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# python .\appD_02.py --creds credentials.ini
+# python .\appD_02.py --creds credentials.ini --appid <your_appid>
 
 import argparse
 import configparser
@@ -9,12 +9,6 @@ import urllib3
 import json
 import os
 import sys
-
-# Access environment variables
-app_online = os.getenv('ONLINE_SERVICE')
-app_mobile = os.getenv('MOBILE_SERVICE')
-print(f"online app id: {app_online}")
-print(f"mobile app id: {app_mobile}")
 
 # Suppress only the single warning from urllib3.
 urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
@@ -87,6 +81,7 @@ class Authentication:
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Authenticate with AppDynamics API using credentials from a file.')
     parser.add_argument('--creds', required=True, help='Path to the credentials .ini file')
+    parser.add_argument('--appid', required=True, help='Application ID for the business transaction')
     return parser.parse_args()
 
 # Load credentials from the .ini file
@@ -119,10 +114,10 @@ if __name__ == "__main__":
     auth = Authentication(creds)
     token = auth.initoauth()
 
-    # Define the business transactions request
+    # Define the business transactions request with the provided appid
     businesstransactions = {
         "type": "GET",
-        "uri": '/controller/restui/policy2/policiesSummary/591',
+        "uri": f'/controller/restui/policy2/policiesSummary/{args.appid}',  # Use appid from command line
         "returntype": "JSON"
     }
 
@@ -131,8 +126,7 @@ if __name__ == "__main__":
     print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
 
     # Save the downloaded JSON data to a file
-    output_file_path = f".github/actions/service_endpoint/{app_online}_bt.json"
+    output_file_path = f".github/actions/service_endpoint/{args.appid}_bt.json"
     with open(output_file_path, "w") as json_file:
         json.dump(json_data, json_file, indent=4)
     print(f"JSON data saved to {output_file_path}")
-    print(f"online app id: {app_online}")
