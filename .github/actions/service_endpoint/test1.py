@@ -119,7 +119,7 @@ if __name__ == "__main__":
     # Define the business transactions request
     businesstransactions = {
         "type": "GET",
-        "uri": '/controller/restui/policy2/policiesSummary/578',
+        "uri": '/controller/restui/policy2/policiesSummary/591',
         "returntype": "JSON"
     }
 
