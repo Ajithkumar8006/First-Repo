@@ -119,7 +119,8 @@ if __name__ == "__main__":
     # Define the business transactions request
     businesstransactions = {
         "type": "GET",
-        "uri": '/controller/restui/policy2/policiesSummary/519',
+        "uri": '/controller/restui/policy2/policiesSummary/{app_online}',
+        print(f"{app_online}"),
         "returntype": "JSON"
     }
 
@@ -128,6 +129,6 @@ if __name__ == "__main__":
     print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
 
     # Save the downloaded JSON data to a file
-    with open(".github/actions/service_endpoint/{app_online}-bt.json", "w") as json_file:
+    with open(".github/actions/service_endpoint/{app_online}_bt.json", "w") as json_file:
         json.dump(json_data, json_file, indent=4)
     print("JSON data saved to bt.json")
