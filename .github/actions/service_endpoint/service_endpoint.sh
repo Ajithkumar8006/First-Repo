@@ -2,7 +2,7 @@
 
 # Define the base path for your GitHub repository (if necessary)
 ACTION_PATH=".github/actions"
-CREDENTIALS_TEST="credentials.ini"
+CREDENTIALS_TEST=".github/actions/credentials.ini"
 SERVICE_ENDPOINT="service_endpoint"
 
 # Define the path to the Python script and credentials file
