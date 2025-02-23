@@ -52,6 +52,7 @@ runs:
 
     - name: Run AppDynamics tests
       run: |
+        echo $pwd
         #python .github/actions/service_endpoint/test1.py --creds credentials.ini
         #python .github/actions/service_endpoint/bt_csv.py
         chmod +x .github/actions/service_endpoint/service_endpoint.sh
