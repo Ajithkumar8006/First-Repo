@@ -8,12 +8,13 @@ import requests
 import urllib3
 import json
 import os
+import sys
 
-# Access environment variable
+# Access environment variables
 app_online = os.getenv('ONLINE_SERVICE')
 app_mobile = os.getenv('MOBILE_SERVICE')
 print(f"online app id: {app_online}")
-print(f"mobile app id: {app_mobile }")
+print(f"mobile app id: {app_mobile}")
 
 # Suppress only the single warning from urllib3.
 urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
@@ -35,20 +36,18 @@ class Authentication:
             "client_secret": self.credinfo['clientsecret']
         }
 
-        #print(f"initoauth: Sending OAuth request: url: {url} headers: {headers} data: {payload}")
-
         # Sending the request to get the token
         try:
-            result = requests.post(url, headers=headers, data=payload, verify=False)  # Disable SSL/TLS certificates verification
+            result = requests.post(url, headers=headers, data=payload, verify=True)  # Avoid disabling SSL/TLS verification
         except requests.exceptions.RequestException as e:
             print(f"Error sending OAuth request: {e}")
-            exit(1)
+            sys.exit(1)
 
         print(f"initoauth: OAuth result: {result}")
 
         if not result.ok:
             print(f"OAuth request failed: {result} {result.reason}")
-            exit(1)
+            sys.exit(1)
 
         jsondata = result.json()
         self.authinfo['token'] = jsondata['access_token']
@@ -68,17 +67,17 @@ class Authentication:
         print(f"download_json: Sending GET request: url: {url} headers: {headers}")
 
         try:
-            response = requests.get(url, headers=headers, verify=False)  # Disable SSL/TLS certificates verification
+            response = requests.get(url, headers=headers, verify=True)  # Avoid disabling SSL/TLS verification
         except requests.exceptions.RequestException as e:
             print(f"Error sending GET request: {e}")
-            exit(1)
+            sys.exit(1)
 
         print(f"download_json: GET request result: {response}")
 
         if not response.ok:
             print(f"GET request failed: {response} {response.reason}")
             print(f"Response content: {response.content}")
-            exit(1)
+            sys.exit(1)
 
         jsondata = response.json()
         print("Successfully downloaded JSON data")
@@ -92,6 +91,10 @@ def parse_arguments():
 
 # Load credentials from the .ini file
 def load_credentials(filepath):
+    if not os.path.isfile(filepath):
+        print(f"Error: The file {filepath} does not exist.")
+        sys.exit(1)
+
     config = configparser.ConfigParser()
     config.read(filepath)
 
@@ -128,7 +131,8 @@ if __name__ == "__main__":
     print("Downloaded JSON data: ", json.dumps(json_data, indent=4))
 
     # Save the downloaded JSON data to a file
-    with open(".github/actions/service_endpoint/bt.json", "w") as json_file:
+    output_file_path = f".github/actions/service_endpoint/{app_online}_bt.json"
+    with open(output_file_path, "w") as json_file:
         json.dump(json_data, json_file, indent=4)
-    print("JSON data saved to bt.json")
-    print("JSON data saved to {app_online}_bt.json")
+    print(f"JSON data saved to {output_file_path}")
+    print(f"online app id: {app_online}")
