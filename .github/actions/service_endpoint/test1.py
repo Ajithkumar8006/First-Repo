@@ -7,8 +7,6 @@ import configparser
 import requests
 import urllib3
 import json
-import os
-import sys
 
 # Suppress only the single warning from urllib3.
 urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
