@@ -6,7 +6,7 @@ CREDENTIALS_TEST="credentials.ini"
 SERVICE_ENDPOINT="service_endpoint"
 
 # Define the path to the Python script and credentials file
-SE="$ACTION_PATH/$SERVICE_ENDPOINT/test2.py"
+SE="$ACTION_PATH/$SERVICE_ENDPOINT/test1.py"
 
 # Check if the Python script and credentials file exist
 if [ -f "$SE" ]; then
