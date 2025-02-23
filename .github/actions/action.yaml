@@ -23,7 +23,6 @@ inputs:
 
 env:
   ACTION_PATH: '.github/actions'
-  CREDENTIALS: '.github/credentials.ini'
 
 runs:
   using: 'composite'
@@ -52,7 +51,11 @@ runs:
     - name: Run AppDynamics tests
       run: |
         chmod +x ${{ env.ACTION_PATH }}/service_endpoint/service_endpoint.sh
+        # Uncomment and modify the following lines based on your actual test files
+        # python3 .github/actions/service_endpoint/test1.py --creds .github/credentials.ini
+        # python3 .github/actions/service_endpoint/bt_csv.py
         ${{ env.ACTION_PATH }}/service_endpoint/service_endpoint.sh
+        # ls to check files
         ls
       shell: bash
 
