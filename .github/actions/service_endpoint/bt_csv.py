@@ -24,7 +24,7 @@ def json_to_csv(json_file, csv_file):
 
 # Example usage
 json_file = 'bt.json'  # Path to your JSON file
-csv_file = './temp/bt.csv'    # Desired output CSV file
+csv_file = 'bt.csv'    # Desired output CSV file
 
 # Call the function to convert JSON to CSV
 json_to_csv(json_file, csv_file)
