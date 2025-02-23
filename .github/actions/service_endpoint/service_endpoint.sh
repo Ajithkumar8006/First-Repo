@@ -5,6 +5,10 @@ ACTION_PATH=".github/actions"
 CREDENTIALS_TEST=".github/credentials.ini"
 SERVICE_ENDPOINT="service_endpoint"
 
+export ONLINE_SERVICE="578"
+export MOBILE_SERVICE="591"
+
+
 # Define the path to the Python script and credentials file
 SE1="$ACTION_PATH/$SERVICE_ENDPOINT/test1.py"
 SE2="$ACTION_PATH/$SERVICE_ENDPOINT/bt_csv.py"
