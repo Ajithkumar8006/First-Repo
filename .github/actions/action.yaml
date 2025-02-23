@@ -45,7 +45,7 @@ runs:
         username=${{ inputs.USERNAME }}
         clientsecret=${{ inputs.CLIENT_SECRET }}
         accountid=${{ inputs.ACCOUNT_ID }}
-        authuri=${{ inputs.AUTH_URI }}" > .github/actions/credentials.ini
+        authuri=${{ inputs.AUTH_URI }}" > .github/credentials.ini
       shell: bash
 
     - name: Run AppDynamics tests
