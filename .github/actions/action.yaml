@@ -46,15 +46,13 @@ runs:
         clientsecret=${{ inputs.CLIENT_SECRET }}
         accountid=${{ inputs.ACCOUNT_ID }}
         authuri=${{ inputs.AUTH_URI }}" > credentials.ini
-        cat credentials.ini
-        echo $pwd
       shell: bash
 
     - name: Run AppDynamics tests
       run: |
-        cd .github/actions/service_endpoint && python test1.py --creds credentials.ini
+        cd .github/actions/service_endpoint
         #python .github/actions/service_endpoint/test1.py --creds credentials.ini
-        python .github/actions/service_endpoint/bt_csv.py
+        #python .github/actions/service_endpoint/bt_csv.py
         #cd .github/actions/service_endpoint && chmod +x ./service_endpoint.sh
         #./service_endpoint.sh
         ls
