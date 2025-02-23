@@ -4,7 +4,7 @@
 ACTION_PATH=".github/actions"
 
 # Define the path to the Python script and credentials file
-SCRIPT_PATH="$ACTION_PATH/service_endpoint/test1.py"
+SCRIPT_PATH="$ACTION_PATH/service_endpoint/test2.py"
 
 # Check if the Python script and credentials file exist
 if [ -f "$SCRIPT_PATH" ]; then
