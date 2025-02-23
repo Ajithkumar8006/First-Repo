@@ -18,9 +18,9 @@ else
 fi
 
 # Check if the Python script and credentials file exist
-if [ -f "$SE3" ]; then
+if [ -f "$SE2" ]; then
     # Run the Python script with the specified arguments
-    python3 "$SE3" 
+    python3 "$SE2" --appid "591"
 else
     echo "Error: Either $SE2 not found!"
 fi
