@@ -1,0 +1,26 @@
+name: Run AppDynamics API Script Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-api-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Run AppDynamics API script with action
+        uses: ./path/to/your/action  # Point to your local or remote action
+        with:
+          cred_file: './path/to/credentials.ini'
+          debug_level: '5'
+          output_format: 'json'
+          app_name: 'Patient_Online_Services_Portal_Test'
+          transaction_name: 'all_business_transactions_list'

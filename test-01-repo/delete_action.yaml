@@ -1,0 +1,71 @@
+.
+├── .github
+│   ├── workflows
+│   │   └── workflow.yaml  # GitHub Workflow YAML file
+│   └── actions
+│       └── run-appdynamics-api
+│           └── action.yaml  # GitHub Action YAML file
+│           └── run_appdynamics.sh  # Shell script running the Python script
+├── scripts
+│   ├── appdynamics_api.py  # The Python script to be executed
+└── requirements.txt
+
+#-----------------------
+
+name: Run AppDynamics API Script
+
+description: A GitHub Action to run the AppDynamics API script with customizable parameters.
+
+inputs:
+  python_version:
+    description: 'Python version to use'
+    required: false
+    default: '3.8'
+
+  cred_file:
+    description: 'Path to credentials file'
+    required: true
+
+  debug_level:
+    description: 'Debug level'
+    required: false
+    default: '5'
+
+  output_format:
+    description: 'Output format (e.g., json, xml)'
+    required: false
+    default: 'json'
+
+  app_name:
+    description: 'Application name'
+    required: true
+
+  transaction_name:
+    description: 'Business transaction name'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python_version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run AppDynamics API script
+      run: ./scripts/run_appdynamics.sh
+      shell: bash
+      env:
+        CRED_FILE: ${{ inputs.cred_file }}
+        DEBUG_LEVEL: ${{ inputs.debug_level }}
+        OUTPUT_FORMAT: ${{ inputs.output_format }}
+        APP_NAME: ${{ inputs.app_name }}
+        TRANSACTION_NAME: ${{ inputs.transaction_name }}
