@@ -1,0 +1,34 @@
+name: AppDynamics
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  automated_report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run the AppDynamics automation action
+        uses: ./.github/actions 
+        with:
+          HOSTURL: ${{ vars.HOSTURL }} 
+          USERNAME: ${{ secrets.USERNAME }} 
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }} 
+          ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }} 
+          AUTH_URI: ${{ secrets.AUTH_URI }} 
+          
+      - name: Run AppDynamics API script with action
+        uses: ./  
+        with:
+          cred_file: '.github/actions/credentials.ini' 
+          debug_level: '5' 
+          output_format: 'json' 
+          app_name: 'Patient_Online_Services_Portal_Test' 
+          transaction_name: 'all_business_transactions_list' 
