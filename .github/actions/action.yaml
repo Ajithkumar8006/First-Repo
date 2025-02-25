@@ -71,7 +71,9 @@ runs:
       shell: bash
 
     - name: Run AppDynamics API script
-      run: .github/actions/run_appdynamics.sh
+      run: |
+      chmod +x .github/actions/run_appdynamics.sh
+      .github/actions/run_appdynamics.sh
       shell: bash
       env:
         CRED_FILE: ${{ inputs.cred_file }}
