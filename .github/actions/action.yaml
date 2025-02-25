@@ -61,6 +61,10 @@ runs:
         accountid=${{ inputs.ACCOUNT_ID }}
         authuri=${{ inputs.AUTH_URI }}" > .github/actions/credentials.ini
       shell: bash
+      
+    - name: Create the temp directory
+      run: mkdir -p ./temp
+      shell: bash
 
     - name: Run AppDynamics API script
       run: |
