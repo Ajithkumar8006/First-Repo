@@ -30,10 +30,10 @@ inputs:
     default: 'json'
   app_name:
     description: 'Application name'
-    required: true
+    required: false
   transaction_name:
     description: 'Business transaction name'
-    required: true  
+    required: false
 
 runs:
   using: 'composite'
@@ -68,7 +68,7 @@ runs:
         .github/actions/run_appdynamics.sh
       shell: bash
       env:
-        CRED_FILE: ${{ inputs.cred_file || '.github/actions/credentials.ini' }}
+        CRED_FILE: ${{ inputs.cred_file }}
         DEBUG_LEVEL: ${{ inputs.debug_level }}
         OUTPUT_FORMAT: ${{ inputs.output_format }}
         APP_NAME: ${{ inputs.app_name }}
@@ -79,4 +79,3 @@ runs:
       with:
         name: Appd-report
         path: ./temp
-
