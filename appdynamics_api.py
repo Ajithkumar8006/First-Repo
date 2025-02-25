@@ -800,7 +800,7 @@ class All_Business_Transactions_List(API_Call):
 
             # Try to save the JSON data into a file
             try:
-                json_file = f'Appid_{appid}_business_transactions_list.json'
+                json_file = f'./temp/Appid_{appid}_business_transactions_list.json'
                 with open(json_file, 'w') as f:
                     json.dump(json_data, f, indent=4)
                     print(f"JSON file '{json_file}' has been created successfully.")
