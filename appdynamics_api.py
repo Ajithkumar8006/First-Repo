@@ -746,7 +746,76 @@ class AppInfo(API_Call):
 
         self.allresults.update(row)
 
+class All_Business_Transactions_List(API_Call):
 
+    def __init__(self, commandinfo, credinfo, options, ApplicationList):
+        super().__init__(commandinfo, credinfo, options, ApplicationList)
+        self.calltype = CallType.GET 
+
+    def parse_results(self):
+        result = self.callresult.content
+        return result
+
+    def expandvars(self, inputstring):
+        # Check if inputstring is a string or dictionary
+        if isinstance(inputstring, str):
+            global timeparams
+            DEBUGOUT(6, "expandvars:", [str(inputstring)])
+
+            account = self.params.get('accountid', '')
+            appid = self.params.get('appid', '')
+            appname = self.params.get('appname', '')
+            tiername = self.params.get('tiername', '')
+            entityname = self.params.get('entityname', '')
+
+            startdate = timeparams.get('startdate', '')
+            enddate = timeparams.get('enddate', '')
+            startepochsecs = timeparams.get('startepochsecs', '')
+            startepochmillies = timeparams.get('startepochmillies', '')
+            durationinmins = timeparams.get('durationinmins', '')
+
+            outputstring = inputstring.format(**locals())
+            DEBUGOUT(5, "expandvars: %s", [outputstring])
+            return outputstring
+        
+        elif isinstance(inputstring, dict):
+            inputstring['requestFilter']['applicationId'] = self.params.get('appid', '')
+            inputstring['requestFilter']['mobileApplicationId'] = self.params.get('mobileappid', '')
+            DEBUGOUT(5, "expandvars: " + str(inputstring), None)
+            return inputstring
+
+    def __str__(self):
+        DEBUGOUT(4, "Applications:__str__:", ())
+
+        resulttext = ""
+        result = self.parse_results()
+
+        # Handle output format JSON
+        if self.options.get('outputformat') == OutputFormat.JSON:
+            json_data = self.callresult.json()
+            resulttext = json.dumps(json_data, indent=4)
+
+            # Use appid from params to dynamically generate the file names
+            appid = self.params.get('appid', 'unknown_appid')
+
+            # Try to save the JSON data into a file
+            try:
+                json_file = f'Appid_{appid}_business_transactions_list.json'
+                with open(json_file, 'w') as f:
+                    json.dump(json_data, f, indent=4)
+                    print(f"JSON file '{json_file}' has been created successfully.")
+                
+                # Create a new JSON output from filtered entries
+                self.save_to_json(json_data, appid)
+            
+            except Exception as e:
+                return ""
+
+        else:
+            print("Error: Data is not in the expected format for JSON.")
+            return ""
+
+        return resulttext
 
 class Actions(API_Call):
 
@@ -880,6 +949,16 @@ commandlist = {
         "uri": '/restui/applicationManagerUiBean/getApplicationsAllTypes?output=JSON',
         "flags": {},
 	"headers": ["type", "name", "id", "description", "createdBy", "createdOn", "modifiedBy", "modifiedOn"]
+    },
+    "all_business_transactions_list": {
+        "type": CallType.CLASS,
+        "Class": All_Business_Transactions_List,
+        "uri": '/controller/rest/applications/{appid}/business-transactions?output=JSON',
+        "flags": {
+            "needs_appid": 1,
+        },
+        "returntype": ReturnType.JSON,
+        "headers": ["name","id","tierName","entryPointType"]
     },
     "appinfo" : {
         "type": CallType.CLASS,
