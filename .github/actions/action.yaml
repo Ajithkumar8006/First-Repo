@@ -19,7 +19,7 @@ inputs:
     required: true
   cred_file:
     description: 'Path to credentials file'
-    required: false
+    required: true
   debug_level:
     description: 'Debug level'
     required: false
@@ -68,7 +68,7 @@ runs:
         .github/actions/run_appdynamics.sh
       shell: bash
       env:
-        CRED_FILE: ${{ inputs.cred_file }}
+        CRED_FILE: ${{ inputs.cred_file || '.github/credentials.ini' }}
         DEBUG_LEVEL: ${{ inputs.debug_level }}
         OUTPUT_FORMAT: ${{ inputs.output_format }}
         APP_NAME: ${{ inputs.app_name }}
