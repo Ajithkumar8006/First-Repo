@@ -62,14 +62,6 @@ runs:
         authuri=${{ inputs.AUTH_URI }}" > .github/actions/credentials.ini
       shell: bash
 
-    - name: Validate credentials.ini
-      run: |
-        if [ ! -f .github/actions/credentials.ini ]; then
-          echo "Error: credentials.ini not found!"
-          exit 1
-        fi
-      shell: bash
-
     - name: Run AppDynamics API script
       run: |
         chmod +x .github/actions/run_appdynamics.sh
@@ -88,9 +80,3 @@ runs:
         name: Appd-report
         path: ./temp
 
-    - name: Clean up credentials file (if applicable)
-      run: |
-        if [ -f .github/actions/credentials.ini ]; then
-          rm .github/actions/credentials.ini
-        fi
-      shell: bash
