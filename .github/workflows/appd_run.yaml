@@ -22,11 +22,7 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }} 
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }} 
           ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }} 
-          AUTH_URI: ${{ secrets.AUTH_URI }} 
-          
-      - name: Run AppDynamics API script with action
-        uses: ./  
-        with:
+          AUTH_URI: ${{ secrets.AUTH_URI }}
           cred_file: '.github/actions/credentials.ini' 
           debug_level: '5' 
           output_format: 'json' 
