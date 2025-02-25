@@ -22,3 +22,4 @@ echo "Running AppDynamics API script for app: $APP_NAME with transaction: $TRANS
 python appdynamics_api.py --cred "$CRED_FILE" --debug "$DEBUG_LEVEL" --output "$OUTPUT_FORMAT" --app "$APP_NAME" "$TRANSACTION_NAME"
 
 #python appdynamics_api.py --cred credentials.ini --debug 5 --output json --app "Patient_Online_Services_Portal_Test"   all_business_transactions_list
+ls -l ./temp
