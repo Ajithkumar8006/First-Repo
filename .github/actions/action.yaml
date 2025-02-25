@@ -19,7 +19,7 @@ inputs:
     required: true
   cred_file:
     description: 'Path to credentials file'
-    required: true
+    required: false
   debug_level:
     description: 'Debug level'
     required: false
