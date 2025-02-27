@@ -16,8 +16,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Run Delete Shell Script Action
-      uses: ./.github/actions  # path to your action
+    - name: Run Shell Script Action
+      uses: ./First-Repo/.github/actions  # Path to the custom action
       with:
-        script-repo: 'First-Repo'         # You can directly use the repository name
+        script-repo: 'First-Repo'         # Repository containing the script
         script-path: 'test-01-repo/delete_shell.sh'
