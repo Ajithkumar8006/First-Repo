@@ -27,15 +27,6 @@ jobs:
           repository: 'Ajithkumar8006/mayo'  # Full repository path (replace with the actual owner/repo)
           ref: 'main'  # Branch name in the mayo repo
           token: ${{ secrets.GITHUB_TOKEN }}  # Use the automatically provided token for authentication
-          ssh-strict: true
-          persist-credentials: true
-          clean: true
-          sparse-checkout-cone-mode: true
-          fetch-depth: 1
-          fetch-tags: false
-          lfs: false
-          submodules: false
-          set-safe-directory: true
 
       # Step 3: Run the custom action defined in First-Repo/.github/actions/action.yaml
       - name: Run Action to Trigger Shell Script
