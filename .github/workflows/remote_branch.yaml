@@ -22,7 +22,7 @@ jobs:
         with:
           repository: 'mayo'
           ref: 'main'  # Branch in the second repository (mayo)
-          token: ${{ secrets.GITHUB_TOKEN }}  # Use token for private repositories
+          token: ${{ secrets.TEST2_TOKEN }}  # Use token for private repositories
 
       # Step 3: Run the custom action defined in First-Repo/.github/actions/action.yaml
       - name: Run Action to Trigger Shell Script
