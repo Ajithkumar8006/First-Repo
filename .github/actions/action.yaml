@@ -26,3 +26,4 @@ runs:
       run: |
         chmod +x ./test-01-repo/delete_shell.sh
         ./test-01-repo/delete_shell.sh  # Run the script
+      shell: bash  # Add the shell type here
