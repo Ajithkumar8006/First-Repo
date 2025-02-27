@@ -3,19 +3,26 @@ name: Run Test Script
 on:
   push:
     branches:
-      - main  # Runs on push to the main branch
+      - main
 
 jobs:
   run-test-script:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout First-Repo repository
-      uses: actions/checkout@v2
-      with:
-        ref: 'main'
+      - name: Checkout First-Repo repository
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
 
-    - name: Run action to clone and run test.sh from mayo repository
-      uses: ./github/actions  # This refers to the local action in First-Repo/.github/actions
-      with:
-        example-input: 'Some input if needed'
+      - name: Checkout mayo repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'mayo/test.sh'
+          ref: 'main'
+          path: '/tmp/mayo'
+
+      - name: Run action to clone and run test.sh from mayo repository
+        uses: ./github/actions  # Reference to the local action in First-Repo/.github/actions
+        with:
+          example-input: 'Some input if needed'
