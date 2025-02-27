@@ -14,8 +14,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: 'main'
-
-     # - name: Run action to clone and run test.sh from mayo repository
-     #  uses: ./github/actions  # Reference to the local action in First-Repo/.github/actions
-     #   with:
-     #    example-input: 'Some input if needed'
+          
+      - name: Run the AppDynamics automation action
+        uses: ./.github/actions 
