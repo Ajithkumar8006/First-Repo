@@ -18,6 +18,6 @@ jobs:
 
       # Use the action defined in First-Repo/.github/actions/action.yaml
     - name: Run Action to Trigger Shell Script
-      uses: ./.github/actions/action  # Default action path (relative to the repo)
+      uses: ./.github/actions  # Default action path (relative to the repo)
       with:
         repo2_branch: 'main'  # Branch in the second repository (test-01-repo) to check out
