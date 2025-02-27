@@ -1,5 +1,5 @@
 name: "Run Remote Shell Script"
-description: "This action checks out two repositories and runs the shell script."
+description: "This action checks out the mayo repository and runs the test.sh script."
 
 inputs:
   repo2_branch:
@@ -10,20 +10,20 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    # Checkout the first repository (First-Repo)
+    # Step 1: Checkout First-Repo repository
     - name: Checkout First-Repo
       uses: actions/checkout@v3
 
-    # Checkout the second repository (Ajithkumar8006/test-01-repo)
-    - name: Checkout test-01-repo
+    # Step 2: Checkout the second repository (mayo)
+    - name: Checkout mayo repository
       uses: actions/checkout@v3
       with:
-        repository: 'Ajithkumar8006/test-01-repo'
-        ref: '${{ inputs.repo2_branch }}'  # Checkout the branch specified in the inputs
+        repository: 'mayo'
+        ref: '${{ inputs.repo2_branch }}'  # Checkout the specified branch in mayo repository
 
-    # Run the shell script from the second repository
-    - name: Run delete_shell.sh from test-01-repo
+    # Step 3: Run the shell script (test.sh) from mayo repository
+    - name: Run test.sh from mayo repository
       run: |
-        chmod +x ./test-01-repo/delete_shell.sh
-        ./test-01-repo/delete_shell.sh  # Run the script
-      shell: bash  # Make sure we specify the shell to run the script
+        chmod +x ./test.sh
+        ./test.sh  # Execute the script from the mayo repository
+      shell: bash  # Specify bash as the shell
