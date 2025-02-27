@@ -1,44 +1,21 @@
-name: Run Shell Script from Remote Repository
+name: Run Test Script
+
 on:
   push:
     branches:
-      - 'main'  # Trigger on push to the main branch of First-Repo
-  pull_request:
-    branches:
-      - 'main'  # Trigger on PR targeting the main branch
-
-permissions:
-  contents: read  # Grants GITHUB_TOKEN permission to read contents of the repository
-  actions: read   # Grants read access to actions (actions/checkout, etc.)
+      - main  # Runs on push to the main branch
 
 jobs:
-  run-shell-script:
+  run-test-script:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the current repository (First-Repo)
-      - name: Checkout First-Repo
-        uses: actions/checkout@v3
+    - name: Checkout First-Repo repository
+      uses: actions/checkout@v2
+      with:
+        ref: 'main'
 
-      # Step 2: Checkout the second repository (mayo)
-      - name: Checkout mayo repo
-        uses: actions/checkout@v3
-        with:
-          repository: 'Ajithkumar8006/mayo'  # Full repository path for mayo repo (replace with the correct owner/repo)
-          ref: 'main'  # Branch name in the mayo repo
-          token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's built-in token for authentication
-          ssh-strict: true
-          persist-credentials: true
-          clean: true
-          sparse-checkout-cone-mode: true
-          fetch-depth: 1
-          fetch-tags: false
-          lfs: false
-          submodules: false
-          set-safe-directory: true
-
-      # Step 3: Run the custom action defined in First-Repo/.github/actions/action.yaml
-      - name: Run Action to Trigger Shell Script
-        uses: ./.github/actions  # Reference the action in the default path
-        with:
-          repo2_branch: 'main'  # Branch in the second repository (mayo)
+    - name: Run action to clone and run test.sh from mayo repository
+      uses: ./.github/actions  # This refers to the local action in First-Repo/.github/actions
+      with:
+        example-input: 'Some input if needed'
