@@ -19,7 +19,7 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: 'First-Repo/test-01-repo'
-        ref: '${{ inputs.repo2_branch }}'  # Checkout the mobilenetwork branch
+        ref: '${{ inputs.repo2_branch }}'  # Checkout the main branch
 
     # Run the shell script from the second repository
     - name: Run delete_shell.sh from test-01-repo
