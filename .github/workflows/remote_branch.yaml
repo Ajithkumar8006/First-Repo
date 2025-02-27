@@ -2,10 +2,10 @@ name: Run Shell Script from Remote Repository
 on:
   push:
     branches:
-      - 'main'  # Trigger on push to appd-report branch
+      - 'main'  # Trigger on push to the main branch
   pull_request:
     branches:
-      - 'main'  # Trigger on PR targeting appd-report branch
+      - 'main'  # Trigger on PR targeting the main branch
 
 jobs:
   run-shell-script:
@@ -16,8 +16,8 @@ jobs:
     - name: Checkout First-Repo
       uses: actions/checkout@v3
 
-      # Use the action defined in the first repo
+      # Use the action defined in First-Repo/.github/actions/action.yaml
     - name: Run Action to Trigger Shell Script
-      uses: ./.github/actions # Path to the custom action
+      uses: ./.github/actions/action  # Default action path (relative to the repo)
       with:
-        repo2_branch: 'main'  # Branch in the second repository to check out
+        repo2_branch: 'main'  # Branch in the second repository (test-01-repo) to check out
