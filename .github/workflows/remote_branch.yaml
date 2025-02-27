@@ -3,7 +3,7 @@ name: Run Test Script
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to the main branch
 
 jobs:
   run-test-script:
@@ -15,14 +15,7 @@ jobs:
         with:
           ref: 'main'
 
-      - name: Checkout mayo repository
-        uses: actions/checkout@v2
-        with:
-          repository: 'mayo/test.sh'
-          ref: 'main'
-          path: '/tmp/mayo'
-
-      - name: Run action to clone and run test.sh from mayo repository
-        uses: ./github/actions  # Reference to the local action in First-Repo/.github/actions
-        with:
-          example-input: 'Some input if needed'
+     # - name: Run action to clone and run test.sh from mayo repository
+     #  uses: ./github/actions  # Reference to the local action in First-Repo/.github/actions
+     #   with:
+     #    example-input: 'Some input if needed'
