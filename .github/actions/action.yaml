@@ -25,9 +25,12 @@ runs:
 
     - name: Copy delete_shell.sh script to action folder
       run: |
-        cp ./repo/${{ inputs.script-path }} ./.github/actions/delete_shell.sh
-        chmod +x ./.github/actions/delete_shell.sh
+        cp ./test-01-repo/delete_shell.sh .github/actions/delete_shell.sh
+        chmod +x .github/actions/delete_shell.sh
+        ls -l .github/actions/
+      shell: bash  # Add the shell property here
 
     - name: Run delete_shell.sh script
       run: |
-        ./.github/actions/delete_shell.sh
+        .github/actions/delete_shell.sh
+      shell: bash  # Add the shell property here
