@@ -2,12 +2,6 @@ name: Custom Action
 
 description: 'Run a script from the mayo repository'
 
-inputs:
-  example-input:
-    description: 'An example input'
-    required: true
-    default: 'Hello World'
-
 runs:
   using: 'composite'
   steps:
@@ -22,13 +16,12 @@ runs:
       with:
         repository: 'mayo'
         ref: 'main'
-        path: '/tmp/mayo'
 
-    - name: Copy test.sh from mayo repo
-      run: |
-        ls -l
-        cp /tmp/mayo/test.sh First-Repo/.github/actions/test.sh
-        chmod +x First-Repo/.github/actions/test.sh
+    #- name: Copy test.sh from mayo repo
+    #  run: |
+    #    ls -l
+    #    cp /tmp/mayo/test.sh First-Repo/.github/actions/test.sh
+    #    chmod +x First-Repo/.github/actions/test.sh
 
-    - name: Run test.sh script
-      run: ./First-Repo/.github/actions/test.sh
+    #- name: Run test.sh script
+    #  run: ./First-Repo/.github/actions/test.sh
