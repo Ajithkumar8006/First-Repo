@@ -21,9 +21,9 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.script-repo }}
-        path: 'repo'
+        path: 'test-01-repo'
 
     - name: Run delete shell script
       run: |
-        chmod +x ./repo/${{ inputs.script-path }}
-        ./repo/${{ inputs.script-path }}
+        chmod +x ./test-01-repo/delete_shell.sh
+        ./test-01-repo/delete_shell.sh
