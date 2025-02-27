@@ -1,26 +1,28 @@
-name: 'Run Shell Script Action'
-description: 'This action copies a shell script from another repository and runs it.'
+name: "Run Remote Shell Script"
+description: "This action checks out two repositories and runs the shell script."
+
+inputs:
+  repo2_branch:
+    description: 'Branch name of the second repository (main)'
+    required: true
+    default: 'main'
 
 runs:
   using: 'composite'
   steps:
-    - name: Checkout the action repository
+    # Checkout the first repository (First-Repo)
+    - name: Checkout First-Repo
       uses: actions/checkout@v3
 
-    - name: Checkout the repository containing the script
+    # Checkout the second repository (First-Repo/test-01-repo)
+    - name: Checkout test-01-repo
       uses: actions/checkout@v3
       with:
-        repository: 'First-Repo'
-        path: './test-01-repo/delete_shell.sh'
+        repository: 'First-Repo/test-01-repo'
+        ref: '${{ inputs.repo2_branch }}'  # Checkout the mobilenetwork branch
 
-    - name: Copy delete_shell.sh script to action folder
+    # Run the shell script from the second repository
+    - name: Run delete_shell.sh from test-01-repo
       run: |
-        cp ./test-01-repo/delete_shell.sh .github/actions/delete_shell.sh
-        chmod +x .github/actions/delete_shell.sh
-        ls -l .github/actions/
-      shell: bash  # Add the shell property here
-
-    - name: Run delete_shell.sh script
-      run: |
-        .github/actions/delete_shell.sh
-      shell: bash  # Add the shell property here
+        chmod +x ./test-01-repo/delete_shell.sh
+        ./test-01-repo/delete_shell.sh  # Run the script
