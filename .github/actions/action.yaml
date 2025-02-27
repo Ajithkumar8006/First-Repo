@@ -5,23 +5,9 @@ description: 'Run a script from the mayo repository'
 runs:
   using: 'composite'
   steps:
-    - name: Checkout the first repository
+    - name: Download Substrate Template
       uses: actions/checkout@v2
       with:
-        repository: 'First-Repo'
-        ref: 'main'
-
-    - name: Checkout the second repository (mayo)
-      uses: actions/checkout@v2
-      with:
-        repository: 'mayo'
-        ref: 'main'
-
-    #- name: Copy test.sh from mayo repo
-    #  run: |
-    #    ls -l
-    #    cp /tmp/mayo/test.sh First-Repo/.github/actions/test.sh
-    #    chmod +x First-Repo/.github/actions/test.sh
-
-    #- name: Run test.sh script
-    #  run: ./First-Repo/.github/actions/test.sh
+          repository: First-Repo
+          ref: main
+          path: substrate-node-template
