@@ -1,29 +1,33 @@
-name: "Run Remote Shell Script"
-description: "This action checks out the mayo repository and runs the test.sh script."
+name: Custom Action
+
+description: 'Run a script from the mayo repository'
 
 inputs:
-  repo2_branch:
-    description: 'Branch name of the second repository (mayo)'
+  example-input:
+    description: 'An example input'
     required: true
-    default: 'main'
+    default: 'Hello World'
 
 runs:
   using: 'composite'
   steps:
-    # Step 1: Checkout the current repository (First-Repo)
-    - name: Checkout First-Repo
-      uses: actions/checkout@v3
-
-    # Step 2: Checkout the second repository (mayo)
-    - name: Checkout mayo repository
-      uses: actions/checkout@v3
+    - name: Checkout the first repository
+      uses: actions/checkout@v2
       with:
-        repository: 'Ajithkumar8006/mayo'  # Full repo path for mayo (replace with actual owner/repo)
-        ref: '${{ inputs.repo2_branch }}'  # Checkout the specified branch in mayo repository
+        repository: 'First-Repo'
+        ref: 'main'
 
-    # Step 3: Run the shell script (test.sh) from mayo repository
-    - name: Run test.sh from mayo repository
+    - name: Checkout the second repository (mayo)
+      uses: actions/checkout@v2
+      with:
+        repository: 'mayo'
+        ref: 'main'
+        path: '/tmp/mayo'
+
+    - name: Copy test.sh from mayo repo
       run: |
-        chmod +x ./test.sh  # Ensure the script is executable
-        ./test.sh  # Execute the script from the mayo repository
-      shell: bash  # Specify bash as the shell
+        cp /tmp/mayo/test.sh First-Repo/.github/actions/test.sh
+        chmod +x First-Repo/.github/actions/test.sh
+
+    - name: Run test.sh script
+      run: ./First-Repo/.github/actions/test.sh
