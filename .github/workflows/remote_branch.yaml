@@ -1,0 +1,23 @@
+name: Run Delete Shell Script
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-action:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Run Delete Shell Script Action
+      uses: ./First-Repo/.github/actions  # path to your action
+      with:
+        script-repo: 'First-Repo'         # You can directly use the repository name
+        script-path: 'test-01-repo/delete_shell.sh'
