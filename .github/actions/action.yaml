@@ -1,16 +1,6 @@
 name: 'Run Shell Script Action'
 description: 'This action copies a shell script from another repository and runs it.'
 
-inputs:
-  script-repo:
-    description: 'Repository where the script is located'
-    required: true
-    default: 'First-Repo'
-  script-path:
-    description: 'Path to the shell script within the repository'
-    required: true
-    default: 'test-01-repo/delete_shell.sh'
-
 runs:
   using: 'composite'
   steps:
@@ -20,8 +10,8 @@ runs:
     - name: Checkout the repository containing the script
       uses: actions/checkout@v3
       with:
-        repository: ${{ inputs.script-repo }}
-        path: 'repo'
+        repository: 'First-Repo'
+        path: './test-01-repo/delete_shell.sh'
 
     - name: Copy delete_shell.sh script to action folder
       run: |
