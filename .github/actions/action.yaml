@@ -26,6 +26,7 @@ runs:
 
     - name: Copy test.sh from mayo repo
       run: |
+        ls -l
         cp /tmp/mayo/test.sh First-Repo/.github/actions/test.sh
         chmod +x First-Repo/.github/actions/test.sh
 
