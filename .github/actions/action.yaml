@@ -1,5 +1,5 @@
-name: 'Delete Shell Script Action'
-description: 'This action runs a shell script from another repository.'
+name: 'Run Shell Script Action'
+description: 'This action copies a shell script from another repository and runs it.'
 
 inputs:
   script-repo:
@@ -17,13 +17,17 @@ runs:
     - name: Checkout the action repository
       uses: actions/checkout@v3
 
-    - name: Checkout the script repository
+    - name: Checkout the repository containing the script
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.script-repo }}
-        path: 'test-01-repo'
+        path: 'repo'
 
-    - name: Run delete shell script
+    - name: Copy delete_shell.sh script to action folder
       run: |
-        chmod +x ./test-01-repo/delete_shell.sh
-        ./test-01-repo/delete_shell.sh
+        cp ./repo/${{ inputs.script-path }} ./.github/actions/delete_shell.sh
+        chmod +x ./.github/actions/delete_shell.sh
+
+    - name: Run delete_shell.sh script
+      run: |
+        ./.github/actions/delete_shell.sh
