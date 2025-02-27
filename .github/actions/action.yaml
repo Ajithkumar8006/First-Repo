@@ -14,16 +14,16 @@ runs:
     - name: Checkout First-Repo
       uses: actions/checkout@v3
 
-    # Checkout the second repository (First-Repo/test-01-repo)
+    # Checkout the second repository (Ajithkumar8006/test-01-repo)
     - name: Checkout test-01-repo
       uses: actions/checkout@v3
       with:
-        repository: 'First-Repo/test-01-repo'
-        ref: '${{ inputs.repo2_branch }}'  # Checkout the main branch
+        repository: 'Ajithkumar8006/test-01-repo'
+        ref: '${{ inputs.repo2_branch }}'  # Checkout the branch specified in the inputs
 
     # Run the shell script from the second repository
     - name: Run delete_shell.sh from test-01-repo
       run: |
         chmod +x ./test-01-repo/delete_shell.sh
         ./test-01-repo/delete_shell.sh  # Run the script
-      shell: bash  # Add the shell type here
+      shell: bash  # Make sure we specify the shell to run the script
