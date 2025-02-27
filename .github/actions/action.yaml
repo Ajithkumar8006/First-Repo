@@ -1,85 +1,29 @@
-name: 'AppDynamics Automation'
-description: 'Composite action to generate AppDynamics reports'
+name: 'Delete Shell Script Action'
+description: 'This action runs a shell script from another repository.'
 
 inputs:
-  HOSTURL:
-    description: 'The host URL for AppDynamics.'
+  script-repo:
+    description: 'Repository where the script is located'
     required: true
-  USERNAME:
-    description: 'The username for AppDynamics.'
+    default: 'First-Repo'
+  script-path:
+    description: 'Path to the shell script within the repository'
     required: true
-  CLIENT_SECRET:
-    description: 'The client secret for AppDynamics.'
-    required: true
-  ACCOUNT_ID:
-    description: 'The account ID for AppDynamics.'
-    required: true
-  AUTH_URI:
-    description: 'The authentication URI for AppDynamics.'
-    required: true
-  cred_file:
-    description: 'Path to credentials file'
-    required: true
-  debug_level:
-    description: 'Debug level'
-    required: false
-    default: '5'
-  output_format:
-    description: 'Output format (e.g., json, xml)'
-    required: false
-    default: 'json'
-  app_name:
-    description: 'Application name'
-    required: false
-  transaction_name:
-    description: 'Business transaction name'
-    required: false
+    default: 'test-01-repo/delete_shell.sh'
 
 runs:
   using: 'composite'
   steps:
-    - name: Checkout code
+    - name: Checkout the action repository
       uses: actions/checkout@v3
-    
-    - name: Set up Python 3
-      uses: actions/setup-python@v2
+
+    - name: Checkout the script repository
+      uses: actions/checkout@v3
       with:
-        python-version: '3.9'
+        repository: ${{ inputs.script-repo }}
+        path: 'repo'
 
-    - name: Install dependencies
+    - name: Run delete shell script
       run: |
-        python3 -m pip install --upgrade pip
-        pip install -r .github/actions/requirements.txt
-      shell: bash
-
-    - name: Create credentials.ini file
-      run: |
-        echo "[credentials]
-        hosturl=${{ inputs.HOSTURL }}
-        username=${{ inputs.USERNAME }}
-        clientsecret=${{ inputs.CLIENT_SECRET }}
-        accountid=${{ inputs.ACCOUNT_ID }}
-        authuri=${{ inputs.AUTH_URI }}" > .github/actions/credentials.ini
-      shell: bash
-      
-    - name: Create the temp directory
-      run: mkdir -p ./temp
-      shell: bash
-
-    - name: Run AppDynamics API script
-      run: |
-        chmod +x .github/actions/run_appdynamics.sh
-        .github/actions/run_appdynamics.sh
-      shell: bash
-      env:
-        CRED_FILE: ${{ inputs.cred_file }}
-        DEBUG_LEVEL: ${{ inputs.debug_level }}
-        OUTPUT_FORMAT: ${{ inputs.output_format }}
-        APP_NAME: ${{ inputs.app_name }}
-        TRANSACTION_NAME: ${{ inputs.transaction_name }}
-
-    - name: Upload generated bt.csv as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Appd-report
-        path: ./temp
+        chmod +x ./repo/${{ inputs.script-path }}
+        ./repo/${{ inputs.script-path }}
