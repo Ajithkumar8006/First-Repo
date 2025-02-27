@@ -1,20 +1,23 @@
-name: Run Delete Shell Script
-
+name: Run Shell Script from Remote Repository
 on:
   push:
     branches:
-      - main
+      - 'main'  # Trigger on push to appd-report branch
   pull_request:
     branches:
-      - main
+      - 'main'  # Trigger on PR targeting appd-report branch
 
 jobs:
-  run-action:
+  run-shell-script:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+      # Checkout the current repository (First-Repo)
+    - name: Checkout First-Repo
       uses: actions/checkout@v3
 
-    - name: Run Shell Script Action
-      uses: ./.github/actions  # Path to your custom action
+      # Use the action defined in the first repo
+    - name: Run Action to Trigger Shell Script
+      uses: ./.github/actions # Path to the custom action
+      with:
+        repo2_branch: 'main'  # Branch in the second repository to check out
