@@ -3,14 +3,14 @@ description: "This action checks out the mayo repository and runs the test.sh sc
 
 inputs:
   repo2_branch:
-    description: 'Branch name of the second repository (main)'
+    description: 'Branch name of the second repository (mayo)'
     required: true
     default: 'main'
 
 runs:
   using: 'composite'
   steps:
-    # Step 1: Checkout First-Repo repository
+    # Step 1: Checkout the current repository (First-Repo)
     - name: Checkout First-Repo
       uses: actions/checkout@v3
 
@@ -18,12 +18,12 @@ runs:
     - name: Checkout mayo repository
       uses: actions/checkout@v3
       with:
-        repository: 'mayo'
+        repository: 'Ajithkumar8006/mayo'  # Full repo path for mayo (replace with actual owner/repo)
         ref: '${{ inputs.repo2_branch }}'  # Checkout the specified branch in mayo repository
 
     # Step 3: Run the shell script (test.sh) from mayo repository
     - name: Run test.sh from mayo repository
       run: |
-        chmod +x ./test.sh
+        chmod +x ./test.sh  # Ensure the script is executable
         ./test.sh  # Execute the script from the mayo repository
       shell: bash  # Specify bash as the shell
