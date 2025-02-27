@@ -12,12 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the current repository (First-Repo)
-    - name: Checkout First-Repo
-      uses: actions/checkout@v3
+      # Step 1: Checkout the current repository (First-Repo)
+      - name: Checkout First-Repo
+        uses: actions/checkout@v3
 
-      # Use the action defined in First-Repo/.github/actions/action.yaml
-    - name: Run Action to Trigger Shell Script
-      uses: ./.github/actions  # Default action path (relative to the repo)
-      with:
-        repo2_branch: 'main'  # Branch in the second repository (test-01-repo) to check out
+      # Step 2: Checkout the second repository (First-Repo/test-01-repo)
+      - name: Checkout test-01-repo
+        uses: actions/checkout@v3
+        with:
+          repository: 'Ajithkumar8006/test-01-repo'
+          ref: 'main'  # Branch in the second repository (test-01-repo)
+          token: ${{ secrets.GITHUB_TOKEN }}  # Ensure permission for private repos
+
+      # Step 3: Run the custom action defined in First-Repo/.github/actions/action.yaml
+      - name: Run Action to Trigger Shell Script
+        uses: ./.github/actions  # Default action path in the same repo
+        with:
+          repo2_branch: 'main'  # Branch in the second repository (test-01-repo) to check out
