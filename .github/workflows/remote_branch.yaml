@@ -2,7 +2,7 @@ name: Run Shell Script from Remote Repository
 on:
   push:
     branches:
-      - 'main'  # Trigger on push to the main branch
+      - 'main'  # Trigger on push to the main branch of the First-Repo
   pull_request:
     branches:
       - 'main'  # Trigger on PR targeting the main branch
@@ -16,16 +16,16 @@ jobs:
       - name: Checkout First-Repo
         uses: actions/checkout@v3
 
-      # Step 2: Checkout the second repository (First-Repo/test-01-repo)
-      - name: Checkout test-01-repo
+      # Step 2: Checkout the second repository (mayo)
+      - name: Checkout mayo repo
         uses: actions/checkout@v3
         with:
-          repository: 'Ajithkumar8006/test-01-repo'
-          ref: 'main'  # Branch in the second repository (test-01-repo)
-          token: ${{ secrets.GITHUB_TOKEN }}  # Ensure permission for private repos
+          repository: 'mayo'
+          ref: 'main'  # Branch in the second repository (mayo)
+          token: ${{ secrets.TEST_TOKEN }}  # Use token for private repositories
 
       # Step 3: Run the custom action defined in First-Repo/.github/actions/action.yaml
       - name: Run Action to Trigger Shell Script
-        uses: ./.github/actions  # Default action path in the same repo
+        uses: ./.github/actions  # Default action path in the same repo (First-Repo)
         with:
-          repo2_branch: 'main'  # Branch in the second repository (test-01-repo) to check out
+          repo2_branch: 'main'  # Branch in the second repository (mayo) to check out
