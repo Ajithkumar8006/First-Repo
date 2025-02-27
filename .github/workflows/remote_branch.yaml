@@ -6,9 +6,10 @@ on:
   pull_request:
     branches:
       - 'main'  # Trigger on PR targeting the main branch
+
 permissions:
-  contents: write
-  actions: write
+  contents: read  # Grants GITHUB_TOKEN permission to read contents of the repository
+  actions: read   # Grants read access to actions (actions/checkout, etc.)
 
 jobs:
   run-shell-script:
@@ -23,12 +24,21 @@ jobs:
       - name: Checkout mayo repo
         uses: actions/checkout@v3
         with:
-          repository: 'mayo'
-          ref: 'main'  # Branch in the second repository (mayo)
-          token: ${{ secrets.GITHUB_TOKEN }}  # Use token for private repositories
+          repository: 'Ajithkumar8006/mayo'  # Full repository path (replace with the actual owner/repo)
+          ref: 'main'  # Branch name in the mayo repo
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use the automatically provided token for authentication
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          sparse-checkout-cone-mode: true
+          fetch-depth: 1
+          fetch-tags: false
+          lfs: false
+          submodules: false
+          set-safe-directory: true
 
       # Step 3: Run the custom action defined in First-Repo/.github/actions/action.yaml
       - name: Run Action to Trigger Shell Script
-        uses: ./.github/actions  # Default action path in the same repo (First-Repo)
+        uses: ./.github/actions/action  # Use the action from the current repository
         with:
-          repo2_branch: 'main'  # Branch in the second repository (mayo) to check out
+          repo2_branch: 'main'  # Branch in the second repository (mayo)
