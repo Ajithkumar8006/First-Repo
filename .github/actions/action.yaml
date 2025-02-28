@@ -1,13 +1,63 @@
-name: Custom Action
+name: 'Python AppDynamics Automation'
+description: 'A composite action to automate AppDynamics tests using Python.'
 
-description: 'Run a script from the mayo repository'
+inputs:
+  HOSTURL:
+    description: 'The host URL for AppDynamics.'
+    required: true
+  USERNAME:
+    description: 'The username for AppDynamics.'
+    required: true
+  CLIENT_SECRET:
+    description: 'The client secret for AppDynamics.'
+    required: true
+  ACCOUNT_ID:
+    description: 'The account ID for AppDynamics.'
+    required: true
+  AUTH_URI:
+    description: 'The authentication URI for AppDynamics.'
+    required: true
+  TEST_TOKEN:
+    description: 'The test token for GitHub API.'
+    required: true
 
 runs:
   using: 'composite'
   steps:
-    - name: Download Substrate Template
-      uses: actions/checkout@v2
+    - name: Set up Python 3
+      uses: actions/setup-python@v2
       with:
-          repository: First-Repo
-          ref: main
-          path: substrate-node-template
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install argparse configparser requests urllib3
+      shell: bash
+
+    - name: Create credentials.ini
+      run: |
+        echo "[credentials]
+        hosturl=${{ inputs.HOSTURL }}
+        username=${{ inputs.USERNAME }}
+        clientsecret=${{ inputs.CLIENT_SECRET }}
+        accountid=${{ inputs.ACCOUNT_ID }}
+        authuri=${{ inputs.AUTH_URI }}" > .github/credentials.ini
+      shell: bash
+
+    - name: Run Service Endpoint Report
+      run: |
+        chmod +x ${{ env.ACTION_PATH }}/service_endpoint.sh
+        ${{ env.ACTION_PATH }}/service_endpoint.sh
+        ls ${{ env.ACTION_PATH }}
+      env:
+        ACTION_PATH: '.github/actions/service_endpoint'
+      shell: bash
+
+    - name: Upload generated bt.csv as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: bt-report
+        path: .github/actions/service_endpoint/591_bt.csv
+      env:
+        GITHUB_TOKEN: ${{ inputs.TEST_TOKEN }}
