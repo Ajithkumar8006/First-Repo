@@ -1,5 +1,5 @@
-name: 'Python AppDynamics Automation'
-description: 'A composite action to automate AppDynamics tests using Python.'
+name: 'AppDynamics Automation'
+description: 'Composite action to generate AppDynamics reports'
 
 inputs:
   HOSTURL:
@@ -17,13 +17,30 @@ inputs:
   AUTH_URI:
     description: 'The authentication URI for AppDynamics.'
     required: true
-  TEST_TOKEN:
-    description: 'The test token for GitHub API.'
+  cred_file:
+    description: 'Path to credentials file'
     required: true
+  debug_level:
+    description: 'Debug level'
+    required: false
+    default: '5'
+  output_format:
+    description: 'Output format (e.g., json, xml)'
+    required: false
+    default: 'json'
+  app_name:
+    description: 'Application name'
+    required: false
+  transaction_name:
+    description: 'Business transaction name'
+    required: false
 
 runs:
   using: 'composite'
   steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
     - name: Set up Python 3
       uses: actions/setup-python@v2
       with:
@@ -32,32 +49,37 @@ runs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        python3 -m pip install argparse configparser requests urllib3
+        pip install -r .github/actions/requirements.txt
       shell: bash
 
-    - name: Create credentials.ini
+    - name: Create credentials.ini file
       run: |
         echo "[credentials]
         hosturl=${{ inputs.HOSTURL }}
         username=${{ inputs.USERNAME }}
         clientsecret=${{ inputs.CLIENT_SECRET }}
         accountid=${{ inputs.ACCOUNT_ID }}
-        authuri=${{ inputs.AUTH_URI }}" > .github/credentials.ini
+        authuri=${{ inputs.AUTH_URI }}" > .github/actions/credentials.ini
+      shell: bash
+      
+    - name: Create the temp directory
+      run: mkdir -p ./temp
       shell: bash
 
-    - name: Run Service Endpoint Report
+    - name: Run AppDynamics API script
       run: |
-        chmod +x ${{ env.ACTION_PATH }}/service_endpoint.sh
-        ${{ env.ACTION_PATH }}/service_endpoint.sh
-        ls ${{ env.ACTION_PATH }}
-      env:
-        ACTION_PATH: '.github/actions/service_endpoint'
+        chmod +x .github/actions/run_appdynamics.sh
+        .github/actions/run_appdynamics.sh
       shell: bash
+      env:
+        CRED_FILE: ${{ inputs.cred_file }}
+        DEBUG_LEVEL: ${{ inputs.debug_level }}
+        OUTPUT_FORMAT: ${{ inputs.output_format }}
+        APP_NAME: ${{ inputs.app_name }}
+        TRANSACTION_NAME: ${{ inputs.transaction_name }}
 
     - name: Upload generated bt.csv as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: bt-report
-        path: .github/actions/service_endpoint/591_bt.csv
-      env:
-        GITHUB_TOKEN: ${{ inputs.TEST_TOKEN }}
+        name: Appd-report
+        path: ./temp
