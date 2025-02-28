@@ -18,11 +18,11 @@ jobs:
       - name: Run the AppDynamics automation action
         uses: ./.github/actions 
         with:
-          HOSTURL: ${{ vars.HOSTURL }} 
-          USERNAME: ${{ secrets.USERNAME }} 
+          HOSTURL: 'https://mayotest.saas.appdynamics.com'
+          USERNAME: 'WA30289@mayotest'
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }} 
-          ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }} 
-          AUTH_URI: ${{ secrets.AUTH_URI }}
+          ACCOUNT_ID: 'mayotest' 
+          AUTH_URI: '/api/oauth/accesss_token'
           cred_file: '.github/actions/credentials.ini' 
           debug_level: '5' 
           output_format: 'json' 
