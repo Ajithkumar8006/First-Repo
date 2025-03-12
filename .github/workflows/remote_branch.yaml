@@ -1,7 +1,7 @@
 name: Run Test Script
 
 on:
-  push:
+  pull:
     branches:
       - main  # Trigger on push to the main branch
 
