@@ -30,12 +30,12 @@ jobs:
       # Step 4: Save the Docker image as an artifact
       - name: Save Docker image as artifact
         run: |
-          # Save the image to a tarball
-          docker save $(docker-compose -f docker-compose.yml ps -q web) -o my-web-server-image.tar
+          # Save the image to a tarball and place it inside the 'project' directory
+          docker save $(docker-compose -f docker-compose.yml ps -q web) -o ${{ github.workspace }}/project/my-web-server-image.tar
 
       # Step 5: Upload Docker image as artifact
       - name: Upload Docker image as artifact
         uses: actions/upload-artifact@v2  # Ensure the version is correct
         with:
           name: docker-image
-          path: my-web-server-image.tar
+          path: ${{ github.workspace }}/project/my-web-server-image.tar
