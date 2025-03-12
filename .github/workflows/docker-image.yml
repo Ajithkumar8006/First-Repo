@@ -1,0 +1,41 @@
+name: Build and Upload Docker Image with Custom Docker Compose Action
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Use Custom Docker Compose Action
+      - name: Build and upload Docker image with custom action
+        uses: ./action  # Path to your custom action (relative to your repository)
+        with:
+          version: '1.29.2'  # Optional: specify the Docker Compose version if needed
+
+      # Step 4: Save the Docker image as an artifact
+      - name: Save Docker image as artifact
+        run: |
+          # Save the image to a tarball
+          docker save $(docker-compose -f docker-compose.yml ps -q web) -o my-web-server-image.tar
+
+      # Step 5: Upload Docker image as artifact
+      - name: Upload Docker image as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: my-web-server-image.tar
