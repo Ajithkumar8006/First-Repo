@@ -1,12 +1,12 @@
 name: Build and Upload Docker Image with Custom Docker Compose Action
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:  # Allow manual triggering
+    inputs:
+      version:
+        description: 'Docker Compose version to install'
+        required: false
+        default: '1.29.2'
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
       - name: Build and upload Docker image with custom action
         uses: ./action  # Path to your custom action (relative to your repository)
         with:
-          version: '1.29.2'  # Optional: specify the Docker Compose version if needed
+          version: ${{ github.event.inputs.version }}  # Use version input from manual trigger
 
       # Step 4: Save the Docker image as an artifact
       - name: Save Docker image as artifact
