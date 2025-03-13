@@ -12,11 +12,11 @@ jobs:
     steps:
     - name: Download Dockerfile from external repository
       run: |
-        mkdir -p ./temp
+        mkdir -p /temp/
         curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/Dockerfile
         curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/app.py
         curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/requirements.txt
-      working-directory: ./temp
+      working-directory: /temp/
 
     - name: Build Docker image
       run: |
