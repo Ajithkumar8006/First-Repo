@@ -1,50 +1,26 @@
-name: Build and Upload Docker Image with Custom Docker Compose Action
+name: Build and Run Docker Image
 
 on:
-  workflow_dispatch:  # Allow manual triggering
-    inputs:
-      version:
-        description: 'Docker Compose version to install'
-        required: false
-        default: '1.29.2'
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-run:
     runs-on: ubuntu-latest
-
+    
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Download Dockerfile from external repository
+      run: |
+        curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/Dockerfile
+        curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/app.py
+        curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/requirements.txt
+      working-directory: .github/actions
 
-      # Step 2: Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      # Step 3: Use Custom Docker Compose Action (if needed)
-      - name: Build and upload Docker image with custom action
-        uses: ./action  # Path to your custom action (relative to your repository)
-        with:
-          version: ${{ github.event.inputs.version }}  # Use version input from manual trigger
-
-      # Step 4: Build and push Docker image using docker/build-push-action@v4
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ${{ github.workspace }}  # Use GitHub workspace for the context
-          file: ${{ github.workspace }}/Dockerfile  # Path to the Dockerfile (ensure correct relative path)
-          push: true  # Set this to `true` to push the image to DockerHub or a registry
-          tags: ${{ steps.meta.outputs.tags }}  # Reference the tags output for the image
-          labels: ${{ steps.meta.outputs.labels }}  # Reference the labels output for the image
-
-      # Step 5: Save the Docker image as an artifact
-      - name: Save Docker image as artifact
-        run: |
-          docker save $(docker-compose -f docker-compose.yml ps -q web) -o ${{ github.workspace }}/project/my-web-server-image.tar
-
-      # Step 6: Upload Docker image as artifact
-      - name: Upload Docker image as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-image
-          path: ${{ github.workspace }}/project/my-web-server-image.tar
+    - name: Build Docker image
+      run: |
+        docker build -t my-docker-image .
+     
+    - name: Run Docker container
+      run: |
+        docker run -d --name my-container my-docker-image
