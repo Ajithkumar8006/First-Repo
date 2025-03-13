@@ -64,7 +64,7 @@ jobs:
         docker save my-docker-image > /tmp/my-docker-image.tar
 
     - name: Upload Docker image as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-pages-artifact@v3
       with:
         name: my-docker-image
         path: /tmp/my-docker-image.tar
