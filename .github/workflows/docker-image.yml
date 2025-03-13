@@ -1,4 +1,4 @@
-name: Build and Run Docker Image
+name: Build and Push Docker Image to GitHub Artifact Repo
 
 on:
   push:
@@ -6,9 +6,9 @@ on:
       - main
 
 jobs:
-  build-and-run:
+  build-and-upload:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Install Docker
       run: |
@@ -38,12 +38,7 @@ jobs:
         # Check if Docker is installed successfully
         docker --version
 
-    - name: Ensure correct permissions for /tmp/
-      run: |
-        # Limiting permissions to just the working directory for safety
-        sudo chmod -R 777 /tmp/
-
-    - name: Download Dockerfile from external repository
+    - name: Download Dockerfile and application files
       run: |
         mkdir -p /tmp/
         curl -L -o /tmp/Dockerfile https://raw.githubusercontent.com/Ajithkumar8006/First-Repo/main/Dockerfile
@@ -55,16 +50,15 @@ jobs:
         cd /tmp/
         docker build -t my-docker-image .
 
-    - name: Run Docker container
-      run: |
-        docker run -d --name my-container my-docker-image
     - name: Save Docker image as tarball
       run: |
+        # Ensure /tmp/my-docker-image.tar is not a directory
+        touch /tmp/my-docker-image.tar
         # Save the built Docker image as a tarball (.tar)
-        docker save my-docker-image > /tmp/my-docker-image.tar
+        docker save my-docker-image -o /tmp/my-docker-image.tar
 
     - name: Upload Docker image as artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: my-docker-image
         path: /tmp/my-docker-image.tar
