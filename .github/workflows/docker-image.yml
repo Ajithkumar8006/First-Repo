@@ -10,18 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io
+        sudo systemctl start docker
+        sudo systemctl enable docker
+
     - name: Download Dockerfile from external repository
       run: |
-        mkdir -p /temp/
-        curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/Dockerfile
-        curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/app.py
-        curl -LJO https://github.com/Ajithkumar8006/First-Repo/blob/main/requirements.txt
-      working-directory: /temp/
+        mkdir -p /tmp/
+        curl -L -o /tmp/Dockerfile https://raw.githubusercontent.com/Ajithkumar8006/First-Repo/main/Dockerfile
+        curl -L -o /tmp/app.py https://raw.githubusercontent.com/Ajithkumar8006/First-Repo/main/app.py
+        curl -L -o /tmp/requirements.txt https://raw.githubusercontent.com/Ajithkumar8006/First-Repo/main/requirements.txt
 
     - name: Build Docker image
       run: |
+        cd /tmp/
         docker build -t my-docker-image .
-     
+
     - name: Run Docker container
       run: |
         docker run -d --name my-container my-docker-image
