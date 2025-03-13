@@ -38,6 +38,11 @@ jobs:
         # Check if Docker is installed successfully
         docker --version
 
+    - name: Ensure proper permissions for /tmp
+      run: |
+        # Make sure that /tmp is accessible
+        sudo chmod -R 777 /tmp/
+
     - name: Download Dockerfile and application files
       run: |
         mkdir -p /tmp/
