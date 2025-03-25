@@ -1,4 +1,4 @@
-name: Hello World Workflow
+name: Hello World Workflow test
 
 on: 
   push:
@@ -6,7 +6,7 @@ on:
       - main  # Trigger workflow on push to the main branch
 
 jobs:
-  hello_world:
+  hello_world_test:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner environment
     
     steps:
