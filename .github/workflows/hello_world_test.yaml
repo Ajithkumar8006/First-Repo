@@ -1,0 +1,17 @@
+name: Hello World Workflow
+
+on: 
+  push:
+    branches:
+      - main  # Trigger workflow on push to the main branch
+
+jobs:
+  hello_world:
+    runs-on: ubuntu-latest  # Use Ubuntu as the runner environment
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Checkout the code from your repository
+
+      - name: Run Hello World script
+        run: echo "Hello, World!"  # This is where we print Hello World
