@@ -1,4 +1,4 @@
-name: Hello World Workflow
+name: Hello World Workflow_01
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         default: 'test'  # Default branch is "test"
 
 jobs:
-  hello_world:
+  hello_world_01:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner environment
 
     steps:
