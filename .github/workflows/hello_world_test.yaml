@@ -1,25 +1,13 @@
-name: Hello World Workflow_01
+name: Test run v2
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to run the workflow on'
-        required: true
-        default: 'test'  # Default branch is "test"
 
 jobs:
-  hello_world_01:
-    runs-on: ubuntu-latest  # Use Ubuntu as the runner environment
-
+  test:
+    runs-on: ubuntu-18.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2  # Checkout the code from your repository
-
-      - name: Run Hello World script
-        run: |
-          if [ "${{ github.event.inputs.branch }}" != "test" ]; then
-            echo "This workflow can only be triggered for the 'test' branch.";
-            exit 1;
-          fi
-          echo "Hello, World!"  # Print "Hello, World!"
+      - name: Show environment v2
+        run: env | grep ^GITHUB
+      - name: Show ref v2
+        run: echo "===============> Version from $GITHUB_REF"
