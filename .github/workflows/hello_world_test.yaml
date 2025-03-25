@@ -1,13 +1,24 @@
-name: Test run v2
+name: Hello World Workflow Test1
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - "test"  # Trigger the workflow when pushing to the 'test' branch
+  
+  pull_request:
+    branches:
+      - "main"  # Trigger the workflow when a PR targets the 'main' branch
+    paths:
+      - ".github/workflows/hello_world_test.yaml"  # Only trigger if the workflow file itself is changed
 
 jobs:
-  test:
-    runs-on: ubuntu-18.04
+  hello_world_job:
+    runs-on: ubuntu-latest  # Use Ubuntu as the runner environment
+
     steps:
-      - name: Show environment v2
-        run: env | grep ^GITHUB
-      - name: Show ref v2
-        run: echo "===============> Version from $GITHUB_REF"
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Checkout the repository code
+
+      - name: Run Hello World script
+        run: |
+          echo "Hello, World!"  # Print "Hello, World!"
