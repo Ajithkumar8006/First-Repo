@@ -3,7 +3,7 @@ name: Hello World Workflow test
 on: 
   push:
     branches:
-      - main  # Trigger workflow on push to the main branch
+      - test  # Trigger workflow on push to the main branch
 
 jobs:
   hello_world_test:
