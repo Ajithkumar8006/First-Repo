@@ -1,15 +1,12 @@
-name: Hello World Workflow Test1
+name: Hello World Workflow Test
 
 on:
-  push:
-    branches:
-      - "test"  # Trigger the workflow when pushing to the 'test' branch
-  
-  pull_request:
-    branches:
-      - "main"  # Trigger the workflow when a PR targets the 'main' branch
-    paths:
-      - ".github/workflows/hello_world_test.yaml"  # Only trigger if the workflow file itself is changed
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run the workflow on'
+        required: true
+        default: 'test'  # Default branch is "test"
 
 jobs:
   hello_world_job:
@@ -21,4 +18,5 @@ jobs:
 
       - name: Run Hello World script
         run: |
-          echo "Hello, World!"  # Print "Hello, World!"
+          # Print "Hello, World!" to the console
+          echo "Hello, World!"
